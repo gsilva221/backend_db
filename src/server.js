@@ -5,7 +5,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+// Importamos la función desde nuestro archivo db.js
+const conectarDB = require('./config/db'); 
 
+// Ejecutamos la conexión
+conectarDB();
 const app = express();
 const port = process.env.PORT || 3001;
 
