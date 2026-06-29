@@ -1,5 +1,7 @@
 const Usuario = require("../models/Usuario");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const jwtConfig = require("../config/jwt");
 
 
 
@@ -247,15 +249,30 @@ mensaje:"Contraseña incorrecta"
 
 
 
+const token = jwt.sign(
+    {
+        id: usuario.id_usuario,
+        rol: usuario.rol
+    },
+    jwtConfig.secret,
+    {
+        expiresIn: "8h"
+    }
+);
+
 res.json({
 
 mensaje:"Login correcto",
+
+token,
 
 usuario:{
 
 id:usuario.id_usuario,
 
 nombre:usuario.nombre,
+
+correo:usuario.correo,
 
 rol:usuario.rol
 
