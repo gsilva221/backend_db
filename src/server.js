@@ -13,7 +13,18 @@ conectarDB();
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors());
+const allowedOrigins = ['https://proyecto-db-peach.vercel.app'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Origin not allowed'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // 1. Conexión a MongoDB Atlas
