@@ -1,30 +1,10 @@
-const {DataTypes}=require("sequelize");
-const db=require("../config/database");
+const mongoose = require("mongoose");
+const buildSchema = require("./baseModel");
 
-
-const Turno=db.define("Turno",{
-
-id_turno:{
-type:DataTypes.INTEGER,
-primaryKey:true,
-autoIncrement:true
-},
-
-entrada:{
-type:DataTypes.DATE
-},
-
-salida:{
-type:DataTypes.DATE
-},
-
-
-id_guardia:{
-type:DataTypes.INTEGER
-}
-
-
+const TurnoSchema = buildSchema({
+  entrada: { type: Date },
+  salida: { type: Date },
+  id_guardia: { type: String },
 });
 
-
-module.exports=Turno;
+module.exports = mongoose.model("Turno", TurnoSchema);

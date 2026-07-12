@@ -1,69 +1,74 @@
-const express=require("express");
+const express = require("express");
+const cors = require("cors");
 
-const app=express();
+const app = express();
 
-
+app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.json({ mensaje: "API del sistema de guardias funcionando 🚀" });
+});
 
 
 
 app.use("/api/usuarios",
-require("./routes/usuarioRoutes")
+require("./routers/usuarioRoutes")
 );
 
 
 app.use("/api/guardias",
-require("./routes/guardiaRoutes")
+require("./routers/guardiaRoutes")
 );
 
 
 app.use("/api/departamentos",
-require("./routes/departamentoRoutes")
+require("./routers/departamentoRoutes")
 );
 
 
 app.use("/api/inquilinos",
-require("./routes/inquilinoRoutes")
+require("./routers/inquilinoRoutes")
 );
 
 
 app.use("/api/novedades",
-require("./routes/novedadRoutes")
+require("./routers/novedadRoutes")
 );
 
 
 app.use("/api/turnos",
-require("./routes/turnoRoutes")
+require("./routers/turnoRoutes")
 );
 
 
 app.use("/api/empleados",
-require("./routes/empleadoRoutes")
+require("./routers/empleadoRoutes")
 );
 
 
 app.use("/api/subcontratistas",
-require("./routes/subcontratistaRoutes")
+require("./routers/subcontratistaRoutes")
 );
 
 
 app.use("/api/visitas",
-require("./routes/visitaRoutes")
+require("./routers/visitaRoutes")
 );
 
 
 app.use("/api/paquetes",
-require("./routes/paqueteRoutes")
+require("./routers/paqueteRoutes")
 );
 
 
 app.use("/api/solicitudes",
-require("./routes/solicitudRoutes")
+require("./routers/solicitudImplementoRoutes")
 );
 
 
 app.use("/api/auditoria",
-require("./routes/auditoriaRoutes")
+require("./routers/auditoriaRoutes")
 );
 
 

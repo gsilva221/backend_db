@@ -1,35 +1,11 @@
-const { DataTypes } = require("sequelize");
-const db = require("../config/database");
+const mongoose = require("mongoose");
+const buildSchema = require("./baseModel");
 
-
-const Guardia = db.define("Guardia", {
-
-    id_guardia:{
-        type:DataTypes.INTEGER,
-        primaryKey:true,
-        autoIncrement:true
-    },
-
-    nombre:{
-        type:DataTypes.STRING,
-        allowNull:false
-    },
-
-    rut:{
-        type:DataTypes.STRING,
-        unique:true
-    },
-
-    telefono:{
-        type:DataTypes.STRING
-    },
-
-    activo:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:true
-    }
-
+const GuardiaSchema = buildSchema({
+  nombre: { type: String, required: true },
+  rut: { type: String, unique: true },
+  telefono: { type: String },
+  activo: { type: Boolean, default: true },
 });
 
-
-module.exports = Guardia;
+module.exports = mongoose.model("Guardia", GuardiaSchema);

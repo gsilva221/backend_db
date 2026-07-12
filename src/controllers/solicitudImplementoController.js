@@ -1,4 +1,4 @@
-const Solicitud = require("../models/Solicitud");
+const Solicitud = require("../models/SolicitudImplemento");
 
 
 

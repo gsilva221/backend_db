@@ -1,69 +1,38 @@
 const Departamento = require("../models/Departamento");
 
-
-exports.crearDepartamento = async(req,res)=>{
-
-try{
-
-const departamento = await Departamento.create(req.body);
-
-res.json(departamento);
-
-
-}catch(error){
-
-res.status(500).json({
-error:"Error al crear departamento"
-});
-
-}
-
+exports.crearDepartamento = async (req, res) => {
+  try {
+    const departamento = await Departamento.create(req.body);
+    return res.status(201).json(departamento);
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al crear departamento", error: error.message });
+  }
 };
 
 
 
-exports.obtenerDepartamentos = async(req,res)=>{
-
-
-try{
-
-
-const departamentos = await Departamento.findAll();
-
-
-res.json(departamentos);
-
-
-}catch(error){
-
-res.status(500).json(error);
-
-}
-
+exports.obtenerDepartamentos = async (req, res) => {
+  try {
+    const departamentos = await Departamento.find().sort({ createdAt: -1 });
+    return res.status(200).json(departamentos);
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al listar departamentos", error: error.message });
+  }
 };
 
 
 
-exports.obtenerDepartamento = async(req,res)=>{
+exports.obtenerDepartamento = async (req, res) => {
+  try {
+    const departamento = await Departamento.findById(req.params.id);
+    if (!departamento) {
+      return res.status(404).json({ mensaje: "Departamento no encontrado" });
+    }
 
-
-const departamento = await Departamento.findByPk(
-req.params.id
-);
-
-
-if(!departamento){
-
-return res.status(404).json({
-mensaje:"Departamento no encontrado"
-});
-
-}
-
-
-res.json(departamento);
-
-
+    return res.status(200).json(departamento);
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al buscar departamento", error: error.message });
+  }
 };
 
 

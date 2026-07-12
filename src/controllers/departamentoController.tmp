@@ -1,0 +1,58 @@
+const Departamento = require("../models/Departamento");
+
+exports.crearDepartamento = async (req, res) => {
+  try {
+    const departamento = await Departamento.create(req.body);
+    return res.status(201).json(departamento);
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al crear departamento", error: error.message });
+  }
+};
+
+exports.obtenerDepartamentos = async (req, res) => {
+  try {
+    const departamentos = await Departamento.find().sort({ createdAt: -1 });
+    return res.status(200).json(departamentos);
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al listar departamentos", error: error.message });
+  }
+};
+
+exports.obtenerDepartamento = async (req, res) => {
+  try {
+    const departamento = await Departamento.findById(req.params.id);
+    if (!departamento) {
+      return res.status(404).json({ mensaje: "Departamento no encontrado" });
+    }
+
+    return res.status(200).json(departamento);
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al buscar departamento", error: error.message });
+  }
+};
+
+exports.actualizarDepartamento = async (req, res) => {
+  try {
+    const departamento = await Departamento.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!departamento) {
+      return res.status(404).json({ mensaje: "Departamento no encontrado" });
+    }
+
+    return res.status(200).json({ mensaje: "Departamento actualizado", departamento });
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al actualizar departamento", error: error.message });
+  }
+};
+
+exports.eliminarDepartamento = async (req, res) => {
+  try {
+    const departamento = await Departamento.findByIdAndDelete(req.params.id);
+    if (!departamento) {
+      return res.status(404).json({ mensaje: "Departamento no encontrado" });
+    }
+
+    return res.status(200).json({ mensaje: "Departamento eliminado" });
+  } catch (error) {
+    return res.status(500).json({ mensaje: "Error al eliminar departamento", error: error.message });
+  }
+};

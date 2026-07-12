@@ -1,32 +1,11 @@
-const {DataTypes}=require("sequelize");
-const db=require("../config/database");
+const mongoose = require("mongoose");
+const buildSchema = require("./baseModel");
 
-
-const Empleado=db.define("Empleado",{
-
-id_empleado:{
-type:DataTypes.INTEGER,
-primaryKey:true,
-autoIncrement:true
-},
-
-nombre:{
-type:DataTypes.STRING
-},
-
-rut:{
-type:DataTypes.STRING
-},
-
-cargo:{
-type:DataTypes.STRING
-},
-
-empresa:{
-type:DataTypes.STRING
-}
-
+const EmpleadoSchema = buildSchema({
+  nombre: { type: String },
+  rut: { type: String },
+  cargo: { type: String },
+  empresa: { type: String },
 });
 
-
-module.exports=Empleado;
+module.exports = mongoose.model("Empleado", EmpleadoSchema);

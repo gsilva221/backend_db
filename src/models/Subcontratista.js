@@ -1,32 +1,11 @@
-const {DataTypes}=require("sequelize");
-const db=require("../config/database");
+const mongoose = require("mongoose");
+const buildSchema = require("./baseModel");
 
-
-const Subcontratista=db.define("Subcontratista",{
-
-id_subcontratista:{
-type:DataTypes.INTEGER,
-primaryKey:true,
-autoIncrement:true
-},
-
-nombre:{
-type:DataTypes.STRING
-},
-
-empresa:{
-type:DataTypes.STRING
-},
-
-rut:{
-type:DataTypes.STRING
-},
-
-servicio:{
-type:DataTypes.STRING
-}
-
+const SubcontratistaSchema = buildSchema({
+  nombre: { type: String },
+  empresa: { type: String },
+  rut: { type: String },
+  servicio: { type: String },
 });
 
-
-module.exports=Subcontratista;
+module.exports = mongoose.model("Subcontratista", SubcontratistaSchema);

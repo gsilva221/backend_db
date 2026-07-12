@@ -1,12 +1,18 @@
-const dns = require('node:dns');
-dns.setServers(['8.8.8.8', '1.1.1.1']);
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const mongoose = require('mongoose');
+const conectarDB = async () => {
+  try {
+    if (!process.env.MONGO_URI) {
+      throw new Error("La variable de entorno MONGO_URI no está definida");
+    }
 
-const conectarDB = () => {
-    mongoose.connect(process.env.MONGO_URI)
-        .then(() => console.log('🟢 ¡Conexión exitosa a MongoDB Atlas!'))
-        .catch((error) => console.error('🔴 Error conectando a MongoDB:', error));
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("🟢 Conexión exitosa a MongoDB Atlas");
+  } catch (error) {
+    console.error("🔴 Error al conectar a MongoDB:", error.message);
+    process.exit(1);
+  }
 };
 
 module.exports = conectarDB;
