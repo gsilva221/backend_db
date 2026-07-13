@@ -5,6 +5,7 @@ const app = express();
 
 const allowedOrigins = [
   'https://proyecto-db-peach.vercel.app',
+  'https://proyecto-rhjgt98lv-gajesus2024-droids-projects.vercel.app',
 ];
 
 const corsOptions = {
