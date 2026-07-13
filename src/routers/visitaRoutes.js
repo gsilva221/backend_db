@@ -1,17 +1,11 @@
-const router=require("express").Router();
+﻿const router = require("express").Router();
+const controller = require("../controllers/visitaController");
+const auth = require("../middleware/authMiddleware");
 
-const controller=require("../controllers/visitaController");
+router.get("/", auth, controller.obtenerVisitas);
+router.post("/", auth, controller.registrarVisita);
+router.put("/:id/salida", auth, controller.marcarSalida);
+router.put("/:id", auth, controller.actualizarVisita);
+router.delete("/:id", auth, controller.eliminarVisita);
 
-
-
-router.post("/",controller.registrarVisita);
-
-
-router.put("/salida/:id",controller.salirVisita);
-
-
-router.get("/",controller.obtenerVisitas);
-
-
-
-module.exports=router;
+module.exports = router;

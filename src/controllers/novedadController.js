@@ -6,20 +6,19 @@ exports.crearNovedad = async(req,res)=>{
 
 try{
 
-const novedad = await Novedad.create(req.body);
 
+	const novedad = await Novedad.create(req.body);
 
-await Auditoria.create({
-titulo:"Nueva novedad registrada",
-descripcion:novedad.descripcion,
-tipo_evento:"novedad",
-id_novedad:novedad.id_novedad,
-id_guardia:novedad.id_guardia,
-usuario_responsable:req.body.usuario
-});
+	await Auditoria.create({
+		titulo: "Nueva novedad registrada",
+		descripcion: novedad.descripcion,
+		tipo_evento: "novedad",
+		id_novedad: novedad._id,
+		id_guardia: novedad.id_guardia || null,
+		usuario_responsable: req.body.usuario || null,
+	});
 
-
-res.json(novedad);
+	return res.json(novedad);
 
 
 }catch(error){
@@ -30,49 +29,35 @@ res.status(500).json(error);
 
 
 
-exports.obtenerNovedades = async(req,res)=>{
-
-const datos = await Novedad.findAll();
-
-res.json(datos);
-
+exports.obtenerNovedades = async (req, res) => {
+	try {
+		const datos = await Novedad.find();
+		return res.json(datos);
+	} catch (error) {
+		return res.status(500).json({ mensaje: 'Error al listar novedades', error: error.message });
+	}
 };
 
 
 
-exports.actualizarNovedad = async(req,res)=>{
-
-
-await Novedad.update(
-req.body,
-{
-where:{
-id_novedad:req.params.id
-}
-});
-
-
-res.json({
-mensaje:"Novedad modificada"
-});
-
+exports.actualizarNovedad = async (req, res) => {
+	try {
+		const actualizado = await Novedad.findByIdAndUpdate(req.params.id, req.body, { new: true });
+		if (!actualizado) return res.status(404).json({ mensaje: 'Novedad no encontrada' });
+		return res.json(actualizado);
+	} catch (error) {
+		return res.status(500).json({ mensaje: 'Error al actualizar novedad', error: error.message });
+	}
 };
 
 
 
-exports.eliminarNovedad = async(req,res)=>{
-
-
-await Novedad.destroy({
-where:{
-id_novedad:req.params.id
-}
-});
-
-
-res.json({
-mensaje:"Novedad eliminada"
-});
-
-
+exports.eliminarNovedad = async (req, res) => {
+	try {
+		const eliminado = await Novedad.findByIdAndDelete(req.params.id);
+		if (!eliminado) return res.status(404).json({ mensaje: 'Novedad no encontrada' });
+		return res.json({ mensaje: 'Novedad eliminada' });
+	} catch (error) {
+		return res.status(500).json({ mensaje: 'Error al eliminar novedad', error: error.message });
+	}
 };

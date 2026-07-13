@@ -42,10 +42,22 @@ mensaje:"Turno cerrado"
 
 
 
-exports.obtenerTurnos=async(req,res)=>{
+exports.salidaTurno = async (req, res) => {
+	try {
+		const actualizado = await Turno.findByIdAndUpdate(req.params.id, { salida: new Date() }, { new: true });
+		if (!actualizado) return res.status(404).json({ mensaje: 'Turno no encontrado' });
+		return res.json({ mensaje: 'Turno cerrado', turno: actualizado });
+	} catch (error) {
+		return res.status(500).json({ mensaje: 'Error al cerrar turno', error: error.message });
+	}
+};
 
-res.json(
-await Turno.findAll()
-);
 
+exports.obtenerTurnos = async (req, res) => {
+	try {
+		const turnos = await Turno.find();
+		return res.json(turnos);
+	} catch (error) {
+		return res.status(500).json({ mensaje: 'Error al listar turnos', error: error.message });
+	}
 };

@@ -1,4 +1,4 @@
-﻿const Visita = require("../models/Visita");
+const Visita = require("../models/Visita");
 
 exports.obtenerVisitas = async (req, res) => {
   try {
@@ -77,9 +77,4 @@ exports.eliminarVisita = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ mensaje: "Error al eliminar visita", error: error.message });
   }
-};
-
-// Alias para compatibilidad: registrarSalida realiza lo mismo que marcarSalida
-exports.registrarSalida = async (req, res) => {
-  return exports.marcarSalida(req, res);
 };
