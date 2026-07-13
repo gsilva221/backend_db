@@ -3,11 +3,31 @@ const cors = require("cors");
 
 const app = express();
 
-// Enable CORS for all routes. Keep this first so preflight requests are handled.
-app.use(cors());
+const allowedOrigins = [
+  'https://proyecto-db-peach.vercel.app',
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Origin not allowed'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials: true,
+};
+
+// Enable CORS for all routes using the allowed frontend origin.
+app.use(cors(corsOptions));
 // Fallback: ensure preflight (OPTIONS) always returns proper headers even if other middleware errors.
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') {
