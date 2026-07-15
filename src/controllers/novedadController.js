@@ -31,7 +31,7 @@ res.status(500).json(error);
 
 exports.obtenerNovedades = async (req, res) => {
 	try {
-		const datos = await Novedad.find();
+		const datos = await Novedad.find().sort({ createdAt: -1 });
 		return res.json(datos);
 	} catch (error) {
 		return res.status(500).json({ mensaje: 'Error al listar novedades', error: error.message });
