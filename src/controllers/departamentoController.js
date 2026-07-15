@@ -40,25 +40,26 @@ exports.obtenerDepartamento = async (req, res) => {
 
 exports.actualizarDepartamento = async(req,res)=>{
 
+  try {
+    const { numero, piso } = req.body;
+    if (!numero || numero.toString().trim() === '') {
+      return res.status(400).json({ mensaje: 'El número de departamento es obligatorio' });
+    }
 
-await Departamento.update(
+    const departamento = await Departamento.findByIdAndUpdate(
+      req.params.id,
+      { numero: numero.toString(), piso: piso !== undefined ? Number(piso) : undefined },
+      { new: true, runValidators: true }
+    );
 
-req.body,
+    if (!departamento) {
+      return res.status(404).json({ mensaje: 'Departamento no encontrado' });
+    }
 
-{
-where:{
-id_departamento:req.params.id
-}
-}
-
-);
-
-
-res.json({
-mensaje:"Departamento actualizado"
-});
-
-
+    return res.status(200).json(departamento);
+  } catch (error) {
+    return res.status(500).json({ mensaje: 'Error al actualizar departamento', error: error.message });
+  }
 };
 
 
@@ -66,19 +67,13 @@ mensaje:"Departamento actualizado"
 
 exports.eliminarDepartamento = async(req,res)=>{
 
-
-await Departamento.destroy({
-
-where:{
-id_departamento:req.params.id
-}
-
-});
-
-
-res.json({
-mensaje:"Departamento eliminado"
-});
-
-
+  try {
+    const departamento = await Departamento.findByIdAndDelete(req.params.id);
+    if (!departamento) {
+      return res.status(404).json({ mensaje: 'Departamento no encontrado' });
+    }
+    return res.status(200).json({ mensaje: 'Departamento eliminado' });
+  } catch (error) {
+    return res.status(500).json({ mensaje: 'Error al eliminar departamento', error: error.message });
+  }
 };
